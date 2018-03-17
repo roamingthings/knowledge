@@ -1,0 +1,17 @@
+== Python Cheatsheet
+
+=== Working with strings
+
+https://docs.python.org/3.6/library/string.html[Python 3.6: Documentation]
+
+.Format like printf()
+[source,python]
+----
+>>> '{0}, {1}, {2}'.format('a', 'b', 'c')
+'a, b, c'
+>>> '{}, {}, {}'.format('a', 'b', 'c')  <1>
+'a, b, c'
+>>> '{:03.2f}'.format(1.23456)
+'001.23'
+----
+<1> Python 3.1+ only
