@@ -1,0 +1,8 @@
+== Spring Framework Cheatsheet
+
+=== Spring Boot configuration
+
+.Always show colors in console output
+----
+spring.output.ansi.enabled=ALWAYS
+----
