@@ -1,0 +1,10 @@
+== Ruby Cheatsheet
+
+=== rvm
+
+Select ruby version per folder
+
+. `.ruby-version``
+----
+1.8.7-p374
+----
