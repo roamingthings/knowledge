@@ -1,0 +1,244 @@
+== Kubernetes Cheatsheet
+:imagesdir: genimages
+
+=== Basic Concepts
+
+Pod::
+    * Deployment-Unit in Kubernetes
+    * A pod consists of one or more containers
+    * Containers in a pod share network
+    * Containers in a pod can share volumes
+    * Each pod receives its own cluster-wide and cluster internal IP address
+    * Multiple containers per pod
+        * Kickstart-Pod
+        * Combine auth, app, ssl and init for one service inside one pod -> Serice-Mesh
+
+[plantuml, podService, png]
+....
+include::kubernetes.puml[tag=podService]
+....
+
+Kubernetes YAML-files::
+    Describe the desired state of the system
+
+`apiVersion extensions/v1beta1` is the current and production version.
+
+==== Service
+
+* IP and DNS for multiple pods
+* Loadbalancing done by cluster
+* Uses labels to find Pods
+
+
+[plantuml, serviceLb, png]
+....
+include::kubernetes.puml[tag=serviceLb]
+....
+
+==== Deployment types
+
+Rolling Update::
+    * Update one pod after the other
+    * Default variant
+    * No service downtime
+    * Both versions get traffic at the same time
+    * consider setting:
+    ** `maxUnavailable` - How many are allowed under specified
+    ** `maxSurge` - How many are allowed over specified
+
+Recreate::
+    * Shutdown and restart all pods at the same time
+    * Involves downtime
+    * no version conflicts
+
+Blue / Gree Deployment::
+    * Startup all pods for the new version then switch all at once
+    * No version conflicts
+    * No downtime
+    * High resource usage
+    * Involves custom handling by using and switching different labels for the versions
+
+Canary::
+    * Ramp up and see if new version is failing
+    * Slowly testing new versions
+    * No Downtime
+    * Both versions get traffic at the same time
+    * Some custom handling of multiple deployments
+
+==== Configuration
+
+Config Maps::
+    * Provide Pods with configuration data
+    * from
+    ** literal values
+    ** files
+    *** Config file
+    *** Static assets
+    ** directories
+    * In Pods as
+    ** Environment variables
+    ** files
+    ** directories
+
+==== Routing with Ingress Controllers
+
+> An Ingress is a collection of rules that allow inbound connections to reach the cluster services.
+
+> It can be configured to give services externally-reachable URLs, load balance traffic, terminate SSL, offer name based virtual hosting, and more.
+
+* Define rules to find a service
+** Define an external access
+*** hostname
+*** path (url)
+** Define internal service to be found
+* Various implementations
+** nginx
+** haproxy
+** Apache
+** traefik
+** voyager
+** ...
+
+NOTE: Implementation interpret rules differently
+
+==== Service
+
+* Is an abstraction which defines a logical set of pods and a policy by which to access them
+* Usually represents a micro-service
+* Different types of services possible
+* Discovery by labels (selector)
+
+
+===== Service Types
+
+Define a service that can be referenced by other services or as a unit.
+
+ClusterIP:: Inside cluster only
+NodePort:: Like clusterIP, additionally maps pod-ports to the same port on each cluster node
+LoadBalancer:: Creates a ClusterIP, a NodePort and a public port to make an app accessible to the public
+ExternalName / ExternalIP:: Like a service, but instead of pointing to pods it just resolves to an external IP (A Record) or an external DNS name (CNAME) - Example: Database outside the cluster
+
+==== Resilience with Service Meshs
+
+* Can provide the missing features
+* Service Proxies (e.g. Envoy) as sidecars in any Pod
+* Can manage:
+** Authentication
+** Monitoring
+** Tracing
+* Also supports resilience pattern like circuit breakers
+* Take a loog at httpd://istio.io[Istio]
+
+==== Volumes / Persistance
+
+Persistance Volume Claim:: Pod claims certain amount of persistence storage. Is mounted by kubernetes into the pod and is made available to the container.
+
+Depending on the platform there is a persistence storage provider (Local hard drive, S3, ...)
+
+=== Basic usage
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/[kubectl Cheat Sheet]
+
+.Use `kubectl` to scaffold a Kubernetes configuration file
+----
+$ kubectl run nginx --image nginx --dry-run -o yaml
+----
+
+.Create or update a deployment from file
+----
+$ kubectl apply -f nginx.yaml
+----
+
+.Edit existing deployment
+----
+$ kubectl edit deployment nginx
+----
+
+.Delete a single pod
+----
+$ kubectl delete pod pod-name-123456
+----
+
+
+.Open service in browser
+----
+$ minikube service <servicename>
+----
+
+.List services
+----
+$ kubectl get service
+----
+
+.Exec into container
+----
+$ kubectl exec -it <pod name>
+----
+
+.Create a new service
+----
+# Create a new service
+$ kubectl expose deployment nginx --name webserver --port 80 --type NodePort
+----
+
+.Enable Minikube Ingress
+----
+$ minikube addons enable ingress
+# Add cluster ip to /etc/hosts
+# 192.168.99.100  minikube
+----
+
+.IP Address of minikube cluster
+----
+$ minikube ip
+----
+
+.Examine state of pod (e.g. downloading of Docker images)
+----
+$ kubectl describe pod <pod-name>
+----
+
+=== Rewrite URLs
+
+The following Ingress will rewrite `http(s)://minikube/customer`` from the outside to `/` in the service.
+
+----
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: customer
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+spec:
+  rules:
+  - host: minikube
+    http:
+      paths:
+      - path: /customer
+        backend:
+          serviceName: customer
+          servicePort: 8080
+----
+
+=== Idle-Pod
+
+Have a pod waiting idle to connect via shell and be inside the cluster to perform diagnose.
+Inside this container you can access a service via the loadbalancer.
+
+=== Application using Database
+
+2 Pods:
+1. Application
+2. Database
+
+1 Service:
+1. Application Service
+
+Scale application if required
+Let the Database pod have a Persistance Volume Claim
+
+=== Resources / Demos
+
+* https://github.com/JoergM/kubernetes_intro_demo[GitHub: JoergM/kubernetes_intro_demo]
+* https://github.com/JoergM/microservice-kubernetes.git[GitHub: JoergM/microservice-kubernetes]
+* https://runnable.com/blog/how-to-use-lets-encrypt-on-kubernetes[How To Use Let’s Encrypt on Kubernetes to Automatically Generate Certs]

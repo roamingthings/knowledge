@@ -1,0 +1,7 @@
+== Visual Studio Code - Cheatsheet
+
+=== Use vscode as default shell editor
+
+----
+code --wait --new-window
+----

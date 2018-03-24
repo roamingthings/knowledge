@@ -1,0 +1,33 @@
+# tag::podService[]
+@startuml
+node pod {
+    node auth
+    node app
+    node ssl
+    node init
+    database database
+
+    auth - app
+    auth -- ssl
+    database -- init
+    app - database
+}
+@enduml
+# end::podService[]
+
+# tag::serviceLb[]
+@startuml
+
+actor User
+node Service
+
+note left of Service : "10.0.0.1"
+
+node Pod1
+node Pod2
+
+User --> Service
+Service --> Pod1 : "Load Balancing"
+Service --> Pod2 : "Load Balancing"
+@enduml
+# end::serviceLb[]
