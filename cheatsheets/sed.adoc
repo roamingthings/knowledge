@@ -1,0 +1,13 @@
+= sed - Cheatsheet
+
+== Replace in file
+
+----
+$ sed -ie "s/to_be_replaced/replace_with/g" <file>
+----
+
+.Docker-Tag
+----
+Docker-Tag defined as: roamingthings/my-image:WILL_BE_REPLACED
+$ sed -ie "s/WILL_BE_REPLACED/$git_commit_id/g" Dockerfile
+----
