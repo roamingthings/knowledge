@@ -1,3 +1,13 @@
 == Asciidoctor Cheatsheet
 
 https://asciidoctor.org/docs/asciidoc-syntax-quick-reference[Asciidoctor Quick Reference]
+
+== Layout by using hidden lines
+
+----
+@startuml
+subA -right-|> Super
+subB -right-|> Super
+subA -[hidden]down-> subB
+@enduml
+----
