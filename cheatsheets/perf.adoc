@@ -2,7 +2,7 @@
 
 run performance tests on cli
 
-.Runn command 50 times monitoring cpu-time used
+.Run command 50 times monitoring cpu-time used
 ----
 $ sudo perf stat -e cpu-stat -r50 <command>
 ----
