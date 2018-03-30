@@ -1,0 +1,7 @@
+= ssh - Cheatsheet
+
+== Copy key to server
+
+----
+$ ssh-copy-id -i ~/.ssh/mykey user@host
+----
