@@ -1,0 +1,12 @@
+== Thymeleaf - Cheatsheet
+
+=== Enumeration as Select/Menu-Options
+
+[source,xml]
+----
+<select class="form-control" id="myEnumField" th:field="*{enumField}">
+    <option value="" selected="selected">Please select...</option>
+    <!--/*@thymesVar id="enumTypeValue" type="com.example.EnumType"*/-->
+    <option th:each="enumTypeValue : ${T(com.example.EnumType).values()}" th:value="${enumTypeValue}" th:text="#{'enumTypeValue.' + ${enumTypeValue.name().toLowerCase()}}">Type Label</option>
+</select>
+----
