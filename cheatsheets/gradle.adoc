@@ -1,0 +1,14 @@
+== Gradle - Cheatsheet
+
+=== Show Stdout, Stderr etc. during test execution
+
+----
+test {
+    testLogging {
+        showStandardStreams true
+        exceptionFormat 'full'
+    }
+}
+----
+
+Can also be used in any test tasks (e.g. for integrationTest)
