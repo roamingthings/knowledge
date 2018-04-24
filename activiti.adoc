@@ -1,0 +1,16 @@
+= Activiti Process engine
+
+== Definition of terms: activity, task, job, execution, ...
+
+"What is an execution?"::
+A pointer to where you are in the process instance currently.
+
+"What is the difference between an execution and a process instance?"::
+A process instance == a collection of executions, structured as a tree and stored relationally
+
+"What is the difference between an activity, a task and a job?"::
+Activity = a step in the process, typically rounded rectangle in BPMN
+
+task = something a user/system has to do
+
+job = a timer or an async continutation of a process
