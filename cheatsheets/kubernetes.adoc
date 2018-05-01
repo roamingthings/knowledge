@@ -237,6 +237,21 @@ Inside this container you can access a service via the loadbalancer.
 Scale application if required
 Let the Database pod have a Persistance Volume Claim
 
+=== Installation on Ubuntu using LXD
+
+==== Grafana deployed via juju
+
+.Retrieve admin password:
+----
+$ juju run-action --wait grafana/0 get-admin-password
+----
+
+=== Dashboard
+.Retrieve admin password, IP and URL for kubernetes cluster (e.g. dashboard)
+----
+$ kubectl --kubeconfig=~/.kube/config.conjure-canonical-kubern-XXX config view
+----
+
 === Resources / Demos
 
 * https://github.com/JoergM/kubernetes_intro_demo[GitHub: JoergM/kubernetes_intro_demo]
