@@ -1,3 +1,6 @@
 = tmux Cheatsheet
 
 https://tmuxcheatsheet.com/
+
+Sample configuration: https://github.com/samoshkin/tmux-config/
+
