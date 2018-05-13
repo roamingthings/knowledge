@@ -1,0 +1,11 @@
+= cURL Cheatsheet
+
+== Sending Form Data
+
+When using one or more `-d` options cURL will automatically use the POST method and send a request body of type `application/x-www-form-urlencoded` which is like a qureary-string.
+
+----
+$ curl -d key=value -dkey2=value2 http://localhost:8080/do-something
+----
+
+This will send the request body `key=value&key2=value2` to the server.
