@@ -3,6 +3,3 @@
 https://tmuxcheatsheet.com/[General cheatsheet]
 https://github.com/samoshkin/tmux-config.git[GitHub: Configuration by samoshkin]
 
-Sample configuration: https://github.com/samoshkin/tmux-config/
-
-
