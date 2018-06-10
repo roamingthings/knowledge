@@ -1,0 +1,9 @@
+= Unifi
+
+== Unify Security Gateway (USG)
+
+.Dump current configuration
+----
+$ mca-ctrl -t dump-cfg
+----
+
