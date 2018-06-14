@@ -1,0 +1,13 @@
+= RPM Cheatsheet
+
+== Querying
+
+.List content of an installed package
+----
+$ rpm -ql <packagename>
+----
+
+.Show package name including version
+----
+$ rpm -qa <packagename>
+----
